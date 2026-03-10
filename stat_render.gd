@@ -1,31 +1,38 @@
 extends Node2D
 
-var handle_mouse_pos
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	handle_mouse_pos = _add_stat(mouse_pos)
-	pass
+# use dict to keep insertion order
+var logged_stats : Dictionary = {}
 
-var mouse_pos : Vector2
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	stat_list[handle_mouse_pos][0] = get_global_mouse_position()
+func _input(event: InputEvent) -> void:
+	# Toggle the debug overlay when pressing F3
+	if event is InputEventKey and event.keycode == KEY_F3 and event.pressed and not event.echo:
+		toggle_debug(not visible)
+
+func toggle_debug(show: bool) -> void:
+	# Use Godot's built-in properties to manage state
+	visible = show
+	set_process(show)
+
+func _process(_delta: float) -> void:
+	# add or update stats in one line
+	log_stat("Mouse Pos", get_global_mouse_position())
+	log_stat("FPS", Engine.get_frames_per_second())
+
+func log_stat(stat_name: String, value: Variant) -> void:
+	# save stat and request redraw
+	logged_stats[stat_name] = value
 	queue_redraw()
-	pass
 
 func _draw():
-	if stat_list:
-		for stat in stat_list:
-			draw_string(ThemeDB.fallback_font, Vector2(0,stat[1]), str(stat[0]))
-
-var stat_count : int
-var stat_list = []
-func _add_stat(stat) -> int:
-	stat_count += 1
-	var height_offset = 5
-	var stat_height = stat_count * height_offset + 13
-	stat_list.append([stat, stat_height])
-	return stat_count - 1
+	if logged_stats.is_empty():
+		return
+		
+	var font = ThemeDB.fallback_font
+	var y_pos = 18          # start y pos
+	var line_spacing = 15   # gap between lines
 	
-func _compute_spring_force(k: float, x: float) -> float:
-	return k*x*-1.0
+	# render each stat
+	for stat_name in logged_stats:
+		var display_text = stat_name + ": " + str(logged_stats[stat_name])
+		draw_string(font, Vector2(0, y_pos), display_text)
+		y_pos += line_spacing
