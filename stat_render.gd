@@ -27,12 +27,11 @@ func _draw():
 	if logged_stats.is_empty():
 		return
 		
-	var font = ThemeDB.fallback_font
 	var y_pos = 18          # start y pos
 	var line_spacing = 15   # gap between lines
 	
 	# render each stat
 	for stat_name in logged_stats:
 		var display_text = stat_name + ": " + str(logged_stats[stat_name])
-		draw_string(font, Vector2(0, y_pos), display_text)
+		draw_string(ThemeDB.fallback_font, Vector2(0, y_pos), display_text)
 		y_pos += line_spacing
