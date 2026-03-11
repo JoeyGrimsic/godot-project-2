@@ -1,0 +1,114 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+% for color box
+\usepackage{tcolorbox}
+\tcbuselibrary{listings, skins, breakable}
+% math
+\usepackage{amsmath, amssymb, amsthm}
+% for float formatting options
+\usepackage{float}
+% tikz
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, fit}
+% for tikz formatting
+\usepackage{adjustbox}
+% for links
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=magenta,
+citecolor=violet]{hyperref}
+% for glossary
+\usepackage[nonumberlist]{glossaries}
+\makeglossaries
+% for table
+\usepackage{booktabs}
+\usepackage{tabularx}
+% for fancy verbtim
+\usepackage{fancyvrb}
+
+\title{block-game}
+\author{Joseph Grimsic}
+\date{\today}
+\usepackage[letterpaper, top=1.3in, bottom=1.3in, left=1.3in,
+right=1.3in, heightrounded]{geometry}
+\renewcommand{\baselinestretch}{1.15} % Line spacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.8em}
+
+\begin{document}
+\maketitle
+
+% \tableofcontents
+% \newpage
+
+\section*{Representing the world}
+\paragraph*{how to: represent as meshes?}
+represent the world as meshes that we can update per frame
+
+\paragraph*{chunk updates}
+the solution is to separate the meshes into chunks. when a chunk is
+updated, we update the corresponding mesh, as opposed to updating the
+whole world as one mesh
+
+\paragraph*{chunk size?}
+maybe 16 voxels wide as tribute to minecraft. we could probably optimize this
+
+\paragraph*{how to: represent individual voxels?}
+do we want a bitmap? like, 2/3d array of block id's?
+
+\paragraph*{how to: track chunk delta? }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+\section*{Updates}
+
+\subsection*{bomb your friends}
+\begin{itemize}
+  \item talk to/pay an npc, and select a player to bomb/nuke to call
+    in ordnance.
+  \item explosive clay/compound generates in the terrain.
+  \item tiers of explosives.
+\end{itemize}
+
+\subsection*{peace and love}
+\begin{itemize}
+  \item do something nice for your friends.
+\end{itemize}
+
+\subsection*{item rendering}
+\begin{itemize}
+  \item two kinds of items:
+    \begin{itemize}
+      \item blocks, rendered in 3d.
+      \item items, rendered in 2d.
+    \end{itemize}
+  \item items rotate when dropped on the ground.
+\end{itemize}
+
+\subsection*{friends update}
+\begin{itemize}
+  \item host and join servers.
+  \item game chat.
+  \item proximity chat?
+  \item telephone?
+  \item shove friend into a ragdoll state?
+  \item netcode everything?
+\end{itemize}
+
+\subsection*{water update?}
+\begin{itemize}
+  \item swim mechanics.
+  \item lake/ocean generation.
+  \item dynamic water?
+  \item other liquids?
+\end{itemize}
+
+\subsection*{logistics: netcode}
+\begin{itemize}
+  \item for netcode, where does the validation happen for ``actions''?
+  \item fight against hackers?
+  \item does every ``action'' need to be requested by the client?
+\end{itemize}
+
+\end{document}

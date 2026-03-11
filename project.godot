@@ -20,6 +20,10 @@ config/icon="res://icon.svg"
 StatRender="*uid://mqinxpqi2iwe"
 Main="*uid://dyvqcxyr0ofia"
 
+[dotnet]
+
+project/assembly_name="its-a-thing"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_vim/plugin.cfg")
