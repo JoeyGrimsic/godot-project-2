@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://dhv6cu4sn25mw"]
+
+[ext_resource type="Script" uid="uid://cur2mexgoge2g" path="res://multiplayer_menu.gd" id="1_menu"]
+
+[node name="MultiplayerMenu" type="Control" unique_id=1149771908]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=1197077966]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -80.0
+offset_right = 120.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HostButton" type="Button" parent="VBox" unique_id=490331835]
+layout_mode = 2
+text = "Host Game"
+
+[node name="JoinButton" type="Button" parent="VBox" unique_id=721811295]
+layout_mode = 2
+text = "Join Game"
+
+[node name="LeaveButton" type="Button" parent="VBox" unique_id=1354471400]
+layout_mode = 2
+text = "Leave Game"
+
+[node name="OfflineButton" type="Button" parent="VBox" unique_id=93663209]
+layout_mode = 2
+text = "Offline / Single Player"
+
+[node name="IPEdit" type="LineEdit" parent="VBox" unique_id=866908074]
+layout_mode = 2
+placeholder_text = "IP (default 127.0.0.1)"
+
+[node name="PortEdit" type="LineEdit" parent="VBox" unique_id=1168584124]
+layout_mode = 2
+placeholder_text = "Port (default 8080)"
+
+[node name="StatusLabel" type="Label" parent="VBox" unique_id=2133130030]
+layout_mode = 2
+text = "Ready."
+horizontal_alignment = 1

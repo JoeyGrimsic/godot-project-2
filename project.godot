@@ -17,7 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-StatRender="*uid://mqinxpqi2iwe"
+NetworkManager="*res://network_manager.gd"
+DebugOverlay="*uid://mqinxpqi2iwe"
 Main="*uid://dyvqcxyr0ofia"
 
 [dotnet]
