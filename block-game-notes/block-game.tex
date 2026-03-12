@@ -111,4 +111,118 @@ do we want a bitmap? like, 2/3d array of block id's?
   \item does every ``action'' need to be requested by the client?
 \end{itemize}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+\section*{Multiplayer prototype (client--server \& offline)}
+
+This section documents the GDScript multiplayer prototype added to the
+project: a small client--server netcode layer and an optional UI so the
+same game can run online (host/join) or offline without separate code
+paths.
+
+\subsection*{Files and autoload}
+
+\begin{itemize}
+  \item \texttt{network\_manager.gd}: core networking logic. Registered
+    as an autoload named \texttt{NetworkManager} in
+    \texttt{project.godot}, so any scene can call its functions.
+  \item \texttt{multiplayer\_menu.gd}: UI script for host/join/leave and
+    offline.
+  \item \texttt{multiplayer\_menu.tscn}: scene with buttons (Host, Join,
+    Leave, Offline) and optional IP/port fields and status label. Attach
+    the script to a \texttt{Control} that has child nodes with the
+    names \texttt{HostButton}, \texttt{JoinButton}, \texttt{LeaveButton},
+    \texttt{OfflineButton}, and optionally \texttt{IPEdit},
+    \texttt{PortEdit}, \texttt{StatusLabel}.
+\end{itemize}
+
+\subsection*{NetworkManager API (for developers)}
+
+\paragraph*{Starting and stopping sessions}
+\begin{itemize}
+  \item \texttt{host\_game(port = 8080)}: creates an
+    \texttt{ENetMultiplayerPeer} server on the given port and assigns it
+    to \texttt{multiplayer.multiplayer\_peer}. Returns \texttt{true} on
+    success. Emits \texttt{server\_started}.
+  \item \texttt{join\_game(ip = "127.0.0.1", port = 8080)}: creates a
+    client peer and connects to the given address. Returns
+    \texttt{true} on success. Emits \texttt{connection\_succeeded} or
+    \texttt{connection\_failed}.
+  \item \texttt{leave\_game()}: closes the current peer and clears it;
+    use when returning to menu or disconnecting.
+  \item \texttt{start\_offline()}: assigns an
+    \texttt{OfflineMultiplayerPeer} so the game runs in single-player
+    with no network. The local instance is the authority for all nodes;
+    \texttt{is\_multiplayer\_authority()} is \texttt{true} where you
+    expect, and no packets are sent.
+\end{itemize}
+
+\paragraph*{Queries}
+\begin{itemize}
+  \item \texttt{is\_server()}: \texttt{true} if this instance is the
+    server (or host).
+  \item \texttt{is\_offline()}: \texttt{true} if
+    \texttt{OfflineMultiplayerPeer} is in use.
+  \item \texttt{get\_local\_id()}: unique peer ID of this instance (e.g.\
+    for UI or logging).
+\end{itemize}
+
+\paragraph*{Signals}
+\begin{itemize}
+  \item \texttt{peer\_connected(id, name)}, \texttt{peer\_disconnected(id,
+    name)}: when a peer joins or leaves (server-side).
+  \item \texttt{connection\_succeeded}, \texttt{connection\_failed}:
+    client-side connection result.
+  \item \texttt{server\_started}: after \texttt{host\_game()} succeeds.
+\end{itemize}
+
+\paragraph*{RPCs (examples)}
+\begin{itemize}
+  \item \texttt{send\_message\_to\_server(text)}: \texttt{@rpc("any\_peer")};
+    clients call this to send a string to the server; the server prints
+    the sender ID and the text.
+  \item \texttt{broadcast\_message(text)}: \texttt{@rpc("any\_peer",
+    "call\_local")}; runs on all peers including the caller, so the host
+    sees it too. Useful for chat or global announcements.
+\end{itemize}
+
+\subsection*{How to use it in game code}
+
+\paragraph*{From any node}
+After the autoload is set up, call the API from menus or game logic:
+\begin{verbatim}
+NetworkManager.host_game(8080)
+NetworkManager.join_game("127.0.0.1", 8080)
+NetworkManager.start_offline()
+NetworkManager.leave_game()
+\end{verbatim}
+
+\paragraph*{Authority and offline}
+Use \texttt{multiplayer.is\_multiplayer\_authority()} (or the node's
+\texttt{is\_multiplayer\_authority()}) so only the owner updates that
+node. In offline mode the local peer is authority everywhere, so the
+same logic runs without branching:
+\begin{verbatim}
+if multiplayer.is_multiplayer_authority():
+    move_character(delta)
+\end{verbatim}
+
+\paragraph*{Calling RPCs}
+The node calling the RPC must be in the scene tree (e.g.\ under the
+same root as \texttt{NetworkManager}). Use \texttt{.rpc()} for the
+current peer or \texttt{.rpc\_id(id)} for a specific peer:
+\begin{verbatim}
+NetworkManager.send_message_to_server.rpc("Hello from client")
+NetworkManager.broadcast_message.rpc("Hello everyone")
+\end{verbatim}
+
+\paragraph*{Using the menu scene}
+Add \texttt{multiplayer\_menu.tscn} as a child of the main scene, or run
+it as a test scene. Buttons drive \texttt{NetworkManager}; optional
+\texttt{IPEdit} and \texttt{PortEdit} override the default
+\texttt{127.0.0.1} and \texttt{8080}. The status label shows connection
+state. For single-player, use ``Offline / Single Player'' so the game
+uses \texttt{OfflineMultiplayerPeer} and no network port is opened.
+
 \end{document}

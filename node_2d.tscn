@@ -1,3 +1,8 @@
-[gd_scene format=3 uid="uid://nl7gn56s8g3p"]
+[gd_scene load_steps=2 format=3 uid="uid://nl7gn56s8g3p"]
+
+[ext_resource type="PackedScene" uid="uid://dhv6cu4sn25mw" path="res://multiplayer_menu.tscn" id="1_menu"]
 
 [node name="Node3D" type="Node3D" unique_id=1465536616]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="MultiplayerMenu" parent="CanvasLayer" instance=ExtResource("1_menu")]
