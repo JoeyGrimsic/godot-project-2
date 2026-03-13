@@ -20,6 +20,16 @@ config/icon="res://icon.svg"
 NetworkManager="*res://multiplayer-demo/network_manager.gd"
 DebugOverlay="*uid://mqinxpqi2iwe"
 Main="*uid://dyvqcxyr0ofia"
+EOSGRuntime="*uid://7saywdx0ipep"
+HPlatform="*uid://yl2muvqrdiud"
+HAuth="*uid://786t1jiowvvg"
+HAchievements="*uid://bis404dty5u5c"
+HFriends="*uid://uumqbey8ji5t"
+HStats="*uid://dbckdip83oone"
+HLeaderboards="*uid://b06khhf20mplm"
+HLobbies="*uid://6iqvm33q0tb1"
+HP2P="*uid://u6ae5fpm6l8q"
+HSessions="*uid://bieh2rxxahuu2"
 
 [dotnet]
 
@@ -27,7 +37,7 @@ project/assembly_name="its-a-thing"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_vim/plugin.cfg")
+enabled=PackedStringArray("res://addons/epic-online-services-godot/plugin.cfg", "res://addons/godot_vim/plugin.cfg")
 
 [physics]
 

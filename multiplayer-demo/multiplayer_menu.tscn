@@ -51,8 +51,8 @@ layout_mode = 2
 placeholder_text = "Port (default 8080)"
 
 [node name="StatusLabel" type="Label" parent="VBox" unique_id=2133130030]
-layout_mode = 2
 custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
 text = "Ready."
 horizontal_alignment = 1
 autowrap_mode = 2
